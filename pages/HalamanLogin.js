@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 
-const LoginScreen = () => {
+const LoginPage = (navigation) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
@@ -26,13 +26,13 @@ const LoginScreen = () => {
         <TouchableOpacity style={styles.socialButton}>
           <Image 
             style={styles.socialIcon} 
-            source={require('./assets/google.png')} 
+            source={require('../assets/google.png')} 
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
           <Image 
             style={styles.socialIcon} 
-            source={require('./assets/facebook.png')} 
+            source={require('../assets/facebook.png')} 
           />
         </TouchableOpacity>
       </View>
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default LoginPage;

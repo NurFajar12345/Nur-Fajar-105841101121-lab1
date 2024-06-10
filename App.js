@@ -1,48 +1,34 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { useFonts } from 'expo-font';
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginPage from './pages/HalamanLogin';
+import { Button } from 'react-native-web';
 
-const App = () => {
-    const [fontsLoaded] = useFonts({
-      'Metro-Bold' : require('./assets/Fonts/Metropolis-Bold.otf'),
-      'Metro-Black' : require('./assets/Fonts/Metropolis-Black.otf'),
-      'Metro-SemiBold' : require('./assets/Fonts/Metropolis-SemiBold.otf'),
-      'Metro-Thin' : require('./assets/Fonts/Metropolis-Thin.otf'),
-      'Metro-Medium' : require('./assets/Fonts/Metropolis-Medium.otf'),
-    });
+function HomeScreen({ navigation }) { 
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button
+      title="Go to Login"
+      onPress={() => navigation.navigate('Login')}
+      />
+    </View>
+  );
+}
 
-    if (!fontsLoaded) {
-      return (
-        <View style={styles.container}>
-          <Text>Font tidak ditemukan!</Text>
-        </View>
-      );
-    }
+const Stack = createNativeStackNavigator();
 
-    return (
-      <View style={styles.container}>
-        <Text style={styles.defaultText}>Hello There</Text>
-        <Text style={[styles.fontText, { fontFamily: 'Metro-Bold' }]}>Metro Bold</Text>
-        <Text style={[styles.fontText, { fontFamily: 'Metro-Black' }]}>Metro Black</Text>
-        <Text style={[styles.fontText, { fontFamily: 'Metro-SemiBold' }]}>Metro SemiBold</Text>
-        <Text style={[styles.fontText, { fontFamily: 'Metro-Thin' }]}>Metro Thin</Text>
-        <Text style={[styles.fontText, { fontFamily: 'Metro-Medium' }]}>Metro Medium</Text>
-      </View>
-    );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  defaultText: {
-    fontSize: 30,
-  },
-  fontText: {
-    fontSize: 30,
-  },
-});
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login" component={LoginPage} />
+        
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
 export default App;

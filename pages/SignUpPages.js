@@ -30,13 +30,13 @@ const SignUpComponent = () => {
         <TouchableOpacity style={styles.socialButton}>
           <Image
             style={styles.socialIcon}
-            source={require('./assets/google.png')}
+            source={require('../assets/google.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
           <Image
             style={styles.socialIcon}
-            source={require('./assets/facebook.png')}
+            source={require('../assets/facebook.png')}
           />
         </TouchableOpacity>
       </View>
