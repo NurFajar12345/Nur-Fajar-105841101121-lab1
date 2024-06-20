@@ -1,88 +1,90 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-
-  const handleEmailChange = (text) => {
-    setEmail(text);
-    if (text.includes('@')) {
-      setError('');
-    } else {
-      setError('Not a valid email address. Should be your@email.com');
-    }
-  };
-
-  const handleSubmit = () => {
-    if (email.includes('@')) {
-      // Handle valid email submission
-      alert('A reset link has been sent to your email address.');
-    } else {
-      setError('Not a valid email address. Should be your@email.com');
-    }
-  };
+  const isValidEmail = email.includes('@');
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Forgot password</Text>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        {/* Back button icon can be added here if needed */}
+      </TouchableOpacity>
+
       <Text style={styles.instructions}>
         Please, enter your email address. You will receive a link to create a new password via email.
       </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={handleEmailChange}
-      />
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>SEND</Text>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <Text style={[styles.errorText, { color: isValidEmail ? 'black' : 'red' }]}>
+          Not a valid email address. Should be your@email.com
+        </Text>
+      </View>
+      <TouchableOpacity style={styles.sendButton}>
+        <Text style={styles.sendButtonText}>SEND</Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    justifyContent: 'center',
     padding: 20,
+    paddingTop: 40,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
+    marginTop: 40,
+    textAlign: 'left',
   },
   instructions: {
     fontSize: 16,
-    textAlign: 'center',
+    color: '#666',
+    marginTop: 20,
+    marginBottom: 20,
+    textAlign: 'left',
+  },
+  inputContainer: {
     marginBottom: 20,
   },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
+    borderColor: '#ccc',
     padding: 10,
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: 'red',
     borderRadius: 5,
-    padding: 15,
-    alignItems: 'center',
   },
-  buttonText: {
+  errorText: {
+    marginTop: 5,
+  },
+  sendButton: {
+    backgroundColor: 'red',
+    borderRadius: 25,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  sendButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
