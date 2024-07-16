@@ -1,49 +1,99 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 
 const HalamanLogin = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    // Perform login validation here
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password.');
+      return;
+    }
+
+    // Simulate login process (e.g., wait for a few seconds before showing notification)
+    setTimeout(() => {
+      // Show success message after successful login
+      showSuccessMessage();
+    }, 1000); // Simulate process delay
+  };
+
+  const showSuccessMessage = () => {
+    Alert.alert(
+      'Login Successful',
+      'You have successfully logged in.',
+      [
+        {
+          text: 'OK',
+          onPress: () => {
+            // Navigate to the Main screen after user presses OK
+            navigation.replace('Main');
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-      />
-      <View style={styles.forgotPasswordContainer}>
-        <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
-        <TouchableOpacity style={styles.forgotPasswordButton} onPress={() => navigation.navigate('ForgotPassword')}>
-          <Image
-            style={[styles.forgotPasswordIcon, { tintColor: 'red' }]} // Menggunakan tintColor untuk mengubah warna ikon
-            source={require('../assets/right.png')} // Ganti dengan path ikon right Anda
-          />
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.loginButton}>
-        <Text style={styles.loginButtonText}>LOGIN</Text>
-      </TouchableOpacity>
-      <View style={styles.bottomContainer}>
-        <Text style={styles.orText}>Or login with social account</Text>
-        <View style={styles.socialButtonsContainer}>
-          <TouchableOpacity style={styles.socialButton}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          autoCompleteType="email"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          autoCompleteType="password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+
+        <View style={styles.forgotPasswordContainer}>
+          <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
+          <TouchableOpacity style={styles.forgotPasswordButton} onPress={() => navigation.navigate('ForgotPassword')}>
             <Image
-              style={styles.socialIcon}
-              source={require('../assets/google.png')} // Ganti dengan path ikon Google Anda
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Image
-              style={styles.socialIcon}
-              source={require('../assets/facebook.png')} // Ganti dengan path ikon Facebook Anda
+              style={[styles.forgotPasswordIcon, { tintColor: 'red' }]}
+              source={require('../assets/right.png')} // Update with the correct path to your icon
             />
           </TouchableOpacity>
         </View>
-      </View>
-    </View>
+
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>LOGIN</Text>
+        </TouchableOpacity>
+
+        <View style={styles.bottomContainer}>
+          <Text style={styles.orText}>Or login with social account</Text>
+
+          <View style={styles.socialButtonsContainer}>
+            <TouchableOpacity style={styles.socialButton}>
+              <Image
+                source={require('../assets/google.png')} // Update with the correct path to your Google icon
+                style={styles.socialIcon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.socialButton}>
+              <Image
+                source={require('../assets/facebook.png')} // Update with the correct path to your Facebook icon
+                style={styles.socialIcon}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -51,27 +101,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 20,
-    paddingTop: 60, // Menambahkan jarak dari atas layar
   },
-  
+  scrollViewContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    flexGrow: 1,
+  },
   input: {
-    height: 50,
-    borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 18,
+    marginBottom: 15,
   },
   forgotPasswordContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end', // Meratakan teks ke kanan
-    alignItems: 'center', // Menyamakan tinggi teks dan ikon
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     marginBottom: 20,
   },
   forgotPasswordText: {
     color: 'black',
-    marginRight: 5, // Jarak antara teks dan ikon
+    marginRight: 5,
   },
   forgotPasswordButton: {
     padding: 5,
@@ -94,18 +146,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   bottomContainer: {
-    marginTop: 'auto', // Membawa container ini ke bagian bawah
+    marginTop: 'auto',
+    marginBottom: 40,
   },
   orText: {
+    fontSize: 16,
+    color: '#666',
     textAlign: 'center',
     marginBottom: 20,
   },
   socialButtonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'center', // Menyatukan tombol sosial di tengah
+    justifyContent: 'center',
   },
   socialButton: {
-    marginHorizontal: 30, // Menambahkan jarak horizontal antara tombol
+    marginHorizontal: 30,
   },
   socialIcon: {
     width: 40,
